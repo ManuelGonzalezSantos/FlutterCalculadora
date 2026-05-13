@@ -1,89 +1,100 @@
 import 'package:flutter/material.dart';
- 
+
 void main() {
-  runApp(const Calculadora());
+  runApp(const Appzinha());
 }
- 
-class Calculadora extends StatefulWidget {
-  const Calculadora({super.key});
- 
+
+class Appzinha extends StatefulWidget {
+  const Appzinha({super.key});
+
   @override
-  State<Calculadora> createState() => _CalculadoraState();
+  State<Appzinha> createState() => _AppzinhaState();
 }
- 
-class _CalculadoraState extends State<Calculadora> {
-  String display = '0';
-  String expressao = '';
- 
-  double num1 = 0;
-  String operacao = '';
-  bool limpar = false;
- 
-  void clicar(String valor) {
+
+class _AppzinhaState extends State<Appzinha> {
+  String tela = '0';
+  String conta = '';
+
+  double valor1 = 0;
+  String sinal = '';
+  bool apagar = false;
+
+  void mexer(String numero) {
     setState(() {
- 
-      // LIMPAR
-      if (valor == 'C') {
-        display = '0';
-        expressao = '';
-        num1 = 0;
-        operacao = '';
+
+      if (numero == 'C') {
+        tela = '0';
+        conta = '';
+        valor1 = 0;
+        sinal = '';
         return;
       }
- 
-      // OPERADORES
-      if (valor == '+' || valor == '-' || valor == '×' || valor == '÷') {
-        num1 = double.parse(display);
-        operacao = valor;
- 
-        expressao = '$display $valor';
- 
-        limpar = true;
+
+      if (numero == '+' ||
+          numero == '-' ||
+          numero == '×' ||
+          numero == '÷') {
+
+        valor1 = double.parse(tela);
+        sinal = numero;
+
+        conta = '$tela $numero';
+
+        apagar = true;
         return;
       }
- 
-      // RESULTADO
-      if (valor == '=') {
-        double num2 = double.parse(display);
-        double resultado = 0;
- 
-        if (operacao == '+') resultado = num1 + num2;
-        if (operacao == '-') resultado = num1 - num2;
-        if (operacao == '×') resultado = num1 * num2;
-        if (operacao == '÷') resultado = num1 / num2;
- 
-        expressao = '$expressao $display';
-        display = resultado.toString();
- 
-        limpar = true;
+
+      if (numero == '=') {
+
+        double valor2 = double.parse(tela);
+        double total = 0;
+
+        if (sinal == '+') total = valor1 + valor2;
+        if (sinal == '-') total = valor1 - valor2;
+        if (sinal == '×') total = valor1 * valor2;
+        if (sinal == '÷') total = valor1 / valor2;
+
+        conta = '$conta $tela';
+
+        tela = total.toString();
+
+        apagar = true;
         return;
       }
- 
-      // NÚMEROS
-      if (limpar) {
-        display = valor;
-        limpar = false;
+
+      if (apagar) {
+
+        tela = numero;
+        apagar = false;
+
       } else {
-        if (display == '0') {
-          display = valor;
+
+        if (tela == '0') {
+          tela = numero;
         } else {
-          display += valor;
+          tela += numero;
         }
+
       }
     });
   }
- 
-  Widget botao(String texto, Color cor) {
+
+  Widget quadrado(String txt, Color corzinha) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.all(4),
         child: ElevatedButton(
+
           style: ElevatedButton.styleFrom(
-            backgroundColor: cor,
+            backgroundColor: corzinha,
           ),
-          onPressed: () => clicar(texto),
+
+          onPressed: () {
+            mexer(txt);
+          },
+
           child: Text(
-            texto,
+            txt,
             style: const TextStyle(
               fontSize: 26,
               color: Colors.black,
@@ -94,36 +105,44 @@ class _CalculadoraState extends State<Calculadora> {
       ),
     );
   }
- 
+
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
+
       debugShowCheckedModeBanner: false,
+
       home: Scaffold(
+
         backgroundColor: Colors.black,
+
         body: Column(
           children: [
- 
-            // EXPRESSÃO (NOVA PARTE)
+
             Container(
               alignment: Alignment.bottomRight,
-              padding: const EdgeInsets.only(top: 40, right: 20),
+              padding: const EdgeInsets.only(
+                top: 40,
+                right: 20,
+              ),
+
               child: Text(
-                expressao,
+                conta,
                 style: const TextStyle(
                   fontSize: 24,
                   color: Colors.grey,
                 ),
               ),
             ),
- 
-            // DISPLAY PRINCIPAL
+
             Expanded(
               child: Container(
                 alignment: Alignment.bottomRight,
                 padding: const EdgeInsets.all(20),
+
                 child: Text(
-                  display,
+                  tela,
                   style: const TextStyle(
                     fontSize: 60,
                     color: Colors.white,
@@ -131,34 +150,42 @@ class _CalculadoraState extends State<Calculadora> {
                 ),
               ),
             ),
- 
-            Row(children: [
-              botao('7', Colors.white),
-              botao('8', Colors.white),
-              botao('9', Colors.white),
-              botao('÷', Colors.orange),
-            ]),
- 
-            Row(children: [
-              botao('4', Colors.white),
-              botao('5', Colors.white),
-              botao('6', Colors.white),
-              botao('×', Colors.orange),
-            ]),
- 
-            Row(children: [
-              botao('1', Colors.white),
-              botao('2', Colors.white),
-              botao('3', Colors.white),
-              botao('-', Colors.orange),
-            ]),
- 
-            Row(children: [
-              botao('0', Colors.white),
-              botao('C', Colors.red),
-              botao('=', Colors.green),
-              botao('+', Colors.orange),
-            ]),
+
+            Row(
+              children: [
+                quadrado('7', Colors.white),
+                quadrado('8', Colors.white),
+                quadrado('9', Colors.white),
+                quadrado('÷', Colors.orange),
+              ],
+            ),
+
+            Row(
+              children: [
+                quadrado('4', Colors.white),
+                quadrado('5', Colors.white),
+                quadrado('6', Colors.white),
+                quadrado('×', Colors.orange),
+              ],
+            ),
+
+            Row(
+              children: [
+                quadrado('1', Colors.white),
+                quadrado('2', Colors.white),
+                quadrado('3', Colors.white),
+                quadrado('-', Colors.orange),
+              ],
+            ),
+
+            Row(
+              children: [
+                quadrado('0', Colors.white),
+                quadrado('C', Colors.red),
+                quadrado('=', Colors.green),
+                quadrado('+', Colors.orange),
+              ],
+            ),
           ],
         ),
       ),
