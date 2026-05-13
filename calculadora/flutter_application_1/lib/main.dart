@@ -79,14 +79,14 @@ class _AppzinhaState extends State<Appzinha> {
     });
   }
 
-  Widget quadrado(String txt, Color corzinha) {
+  Widget quadrado(String txt, Color cor) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.all(4),
         child: ElevatedButton(
 
           style: ElevatedButton.styleFrom(
-            backgroundColor: corzinha,
+            backgroundColor: cor,
           ),
 
           onPressed: () {
